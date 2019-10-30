@@ -1,2 +1,6 @@
-# lunar-lander
-AI Open Gym Lunar Lander
+# Lunar Lander
+Open AI Gym Lunar Lander
+
+## Usage
+
+## 
