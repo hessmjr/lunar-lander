@@ -2,6 +2,7 @@ import gym
 import matplotlib.pyplot as plt
 
 import agent
+from simulation import run_simulation
 
 
 def param_test(env, episodes, agent, params, verbose=False):
