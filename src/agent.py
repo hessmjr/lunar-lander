@@ -1,6 +1,3 @@
-"""
-File containing all RL agent logic.
-"""
 import numpy as np
 import random as rand
 import collections as coll
@@ -15,10 +12,10 @@ class Learner(object):
     Random action learner.  Basically does nothing but pass the random
     action the environment supplied and returns it.
     """
-    def __init__(self, num_feat=4, num_acts=2, alpha=0, gamma=0, 
+    def __init__(self, num_feat=4, num_acts=2, alpha=0, gamma=0,
                  epsilon=0, epsilon_decay=0):
         self.train = False
-    
+
     def querysetstate(self, state, rand_act):
         return rand_act
 
@@ -35,9 +32,9 @@ class QLearner(Learner):
     methodolgy to address continuous states.
     """
 
-    def __init__(self, num_feat=4, num_acts=2,  alpha=0.2, gamma=0.4, 
+    def __init__(self, num_feat=4, num_acts=2,  alpha=0.2, gamma=0.4,
                  epsilon=0.2, epsilon_decay=1.0):
-        
+
         # set all user defined variables
         self.num_feat = num_feat
         self.num_acts = num_acts
@@ -86,9 +83,9 @@ class QLearner(Learner):
         # convert observation to numpy matrix
         s_prime = np.reshape(observation, [1, self.num_feat])
 
-        # if still training add the newest observation and outcome to 
+        # if still training add the newest observation and outcome to
         # learner's memory, followed by experience replay
-        if self.train:  
+        if self.train:
             sample = (self.state, self.action, reward, s_prime)
             self.memory.add(sample)
             self._exp_replay()
@@ -103,25 +100,25 @@ class QLearner(Learner):
 
     def terminate(self, observation, reward):
         """
-        Runs final training with given observations and updates the 
+        Runs final training with given observations and updates the
         logic target model with the current predictions
         """
         # convert observation to numpy matrix
         s_prime = np.reshape(observation, [1, self.num_feat])
 
-        # if still training add the newest observation and outcome to 
+        # if still training add the newest observation and outcome to
         # learner's memory, followed by experience replay
-        if self.train:  
+        if self.train:
             sample = (self.state, self.action, reward, s_prime)
             self.memory.add(sample)
-            self._exp_replay()    
+            self._exp_replay()
 
         # update the target model with current prediction weights
         self.brain.update_target()
 
     def _get_action(self, state, rand_act):
         """
-        Chooses either a random action or utilizes the prediction 
+        Chooses either a random action or utilizes the prediction
         model to get the best predicted action
         """
         # check if still training and if random choice selected
@@ -163,7 +160,7 @@ class QLearner(Learner):
             # update the prediction value for the given state
             predictions = self.brain.predict(state)
             predictions[0][action] = target
-            updates.append(predictions)          
+            updates.append(predictions)
 
         # train the model with the update states sampled and new action prediction
         self.brain.train(np.squeeze(states), np.squeeze(updates))
@@ -182,10 +179,10 @@ class Brain:
 
         # used with training prediction model
         self.epoch = 1
-        self.verbose = False    
-        
-        # create double hidden layer neural network with specified number of 
-        # neurons use rectified linear unit activation function for first two 
+        self.verbose = False
+
+        # create double hidden layer neural network with specified number of
+        # neurons use rectified linear unit activation function for first two
         # layers use linear activation function for final action layer
         model = Sequential([
             Dense(units=num_neurons, input_dim=self.num_feat, activation='relu'),

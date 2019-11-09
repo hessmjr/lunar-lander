@@ -1,8 +1,3 @@
-"""
-File for running training and testing simulations.  Various parameters such 
-as number of episodes run, hyper params, which tests to utilize can all be 
-controlled below.
-"""
 import gym, agent
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,7 +11,7 @@ CONVERGE = 200  # Reward convergance target
 
 def param_test(env, episodes, agent, params, verbose=False):
     """
-    Runs simulation under given conditions and tests specified range of 
+    Runs simulation under given conditions and tests specified range of
     hyperparameters, tracks total reward from each episode and returns
     list of those values.
     """
@@ -32,16 +27,16 @@ def param_test(env, episodes, agent, params, verbose=False):
 
         # build the learner to utilize in the simulation, update the param value
         # being adjust in the simulation here
-        learner = agent(num_feat=feat_count, num_acts=act_count, 
-                        alpha=param_value, gamma=0.99, 
+        learner = agent(num_feat=feat_count, num_acts=act_count,
+                        alpha=param_value, gamma=0.99,
                         epsilon=0.99, epsilon_decay=0.99)
 
         # run simulation and track the returned rewards
         rewards = run_simulation(env, episodes, learner, verbose=verbose)
-        
+
         # only track every 10th reward for cleaner plots
         param_rewards.append(rewards[::10] + [rewards[-1]])
-    
+
     return param_rewards
 
 
@@ -66,7 +61,7 @@ def run_simulation(env, episodes, learner, render=False, verbose=False):
             # if rendering requested runs render engine
             if render:
                 env.render()
-            
+
             # take the next step specified by the learner
             observation, reward, done, info = env.step(action)
             reward_total += reward
@@ -134,8 +129,8 @@ if __name__ == '__main__':
     # build the learner to utilize in the simulation
     feat_count  = env.env.observation_space.shape[0]
     act_count = env.env.action_space.n
-    learner = agent.QLearner(num_feat=feat_count, num_acts=act_count, 
-                             alpha=0.0001, gamma=0.99, 
+    learner = agent.QLearner(num_feat=feat_count, num_acts=act_count,
+                             alpha=0.0001, gamma=0.99,
                              epsilon=0.99, epsilon_decay=0.999)
 
     # train the learner on the given number of episodes
@@ -150,7 +145,7 @@ if __name__ == '__main__':
     plt.plot(x_vals, y_vals)
     plt.ylim(-1000, 300)
     plt.title('Reward Per Training Episode \nUntil Convergance')
-    plt.ylabel('reward') 
+    plt.ylabel('reward')
     plt.xlabel('episode')
     plt.show()
 
@@ -165,10 +160,10 @@ if __name__ == '__main__':
     plt.plot(rewards)
     plt.ylim(-1000, 300)
     plt.title('Reward for 100 Trials with Trainer Learner')
-    plt.ylabel('reward') 
+    plt.ylabel('reward')
     plt.xlabel('episode')
     plt.show()
 
     # stop the environment and end the simulation
-    env.close()   
+    env.close()
     print('\nSimulation complete.')
