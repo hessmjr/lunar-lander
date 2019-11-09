@@ -1,5 +1,6 @@
 # Lunar Lander
-Open AI Gym Lunar Lander simulation and hyper param tuning.  Using Q-learning
+[Open AI Gym Lunar Lander](https://gym.openai.com/envs/LunarLander-v2/)
+simulation and hyper param tuning.  Using Q-learning
 with neural networks to navigate continuous state spaces.
 
 ## Usage
